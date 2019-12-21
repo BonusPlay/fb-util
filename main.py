@@ -8,17 +8,28 @@ APP_ID = 198689910481598
 REDIRECT_URL = 'https://api.bonusplay.pl/fb-util'
 PERMISSIONS = []
 graph = None
+group_ops = [
+	'most_reacted_post'
+]
 
 
 def select_group():
 	groups = graph.get_all_connections(id='me', connection_name='groups')
 	groups = list(groups)
-	print('Administrated groups: ')
-	for i in range(len(groups)):
-		print('{}) {}'.format(i, groups[i]['name']))
+	print('Administrated groups:')
+	for i, group in enumerate(groups):
+		print('{}) {}'.format(i, group['name']))
 
 	index = int(prompt("Select group:"))
 	return groups[index]['id']
+
+
+def select_group_operation():
+	print('Available operations:')
+	for i, op in enumerate(group_ops):
+		print('{}) {}'.format(i, op))
+	index = prompt('Select operation:')
+
 
 
 def main():
@@ -33,8 +44,8 @@ def main():
 		exit(1)
 
 	graph = facebook.GraphAPI(access_token)
-	id = select_group()
-	print(id)
+	group_id = select_group()
+	select_group_operation()
 
 
 if __name__ == "__main__":
